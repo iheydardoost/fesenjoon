@@ -3,13 +3,18 @@ package fsjMessaging;
 import java.time.LocalDateTime;
 
 public class Tweet extends Message{
-    private int tweetNum;
+    private long tweetID;
+    private long lastTweetID = Long.MIN_VALUE;
 
     public Tweet() {
     }
 
-    public Tweet(String msgText, LocalDateTime msgDateTime, long userID, int tweetNum) {
+    public Tweet(String msgText, LocalDateTime msgDateTime, long userID, long tweetID) {
         super(msgText, msgDateTime, userID);
-        this.tweetNum = tweetNum;
+        this.tweetID = tweetID;
+    }
+
+    public long generateID(){
+        return (++lastTweetID);
     }
 }

@@ -1,4 +1,10 @@
+package fsjMain;
+
+import fsjAccount.User;
 import fsjCLI.CommandParser;
+import fsjDataManager.JsonHandler;
+import fsjLogger.LogHandler;
+import fsjPage.FsjPageManager;
 
 public class Initialization {
 
@@ -6,7 +12,15 @@ public class Initialization {
     }
 
     public static void initClasses(){
-        try{ initCommands(); } catch (Exception e) { System.out.println(e); }
+        try {
+            initCommands();
+            JsonHandler.InitMapper();
+            FsjPageManager.initLoginPage();
+            LogHandler.initLogger(true);
+            User.initUser();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void initCommands(){
@@ -36,10 +50,11 @@ public class Initialization {
         CommandParser.addCommand(121, "show");
         CommandParser.addCommand(122, "edit");
         CommandParser.addCommand(123, "list");
+        CommandParser.addCommand(124, "help");
 
         /***----------------------Command_Tags------------------------------***/
         //tagId should be an integer between 700 to 999
         CommandParser.addCommandTag(700, "--choice");
-        CommandParser.addCommandTag(701, "--tweetID");
+        CommandParser.addCommandTag(701, "--tweet");
     }
 }

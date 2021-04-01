@@ -15,8 +15,8 @@ public class MessageRoom extends Page{
     public MessageRoom() {
     }
 
-    private MessageRoom(String pageName, CommandParser commandParser, long roomID, RoomType roomType) {
-        super(pageName, commandParser);
+    private MessageRoom(String pageName, CommandParser commandParser, ArrayList<String> choiceList, long roomID, RoomType roomType) {
+        super(pageName, commandParser, choiceList);
         this.roomID = roomID;
         this.userList = new ArrayList<>();
         this.roomType = roomType;
@@ -27,6 +27,7 @@ public class MessageRoom extends Page{
         public String pageName;
         public CommandParser commandParser;
         public RoomType roomType;
+        public ArrayList<String> choiceList;
 
         public MessageRoomBuilder setPageName(String pageName) {
             this.pageName = pageName;
@@ -43,8 +44,13 @@ public class MessageRoom extends Page{
             return this;
         }
 
+        public MessageRoomBuilder setChoiceList(ArrayList<String> choiceList){
+            this.choiceList = choiceList;
+            return this;
+        }
+
         public MessageRoom build(){
-            return new MessageRoom(this.pageName,this.commandParser,generateID(),this.roomType);
+            return new MessageRoom(this.pageName,this.commandParser,this.choiceList,generateID(),this.roomType);
         }
     }
 

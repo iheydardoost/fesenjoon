@@ -1,10 +1,45 @@
-TextInputInterface.java
- TextInputInterface
-ConsoleColors.java
- ConsoleColors
-Main.java
- Main
-Initialization.java
- Initialization
-CommandParser.java
- CommandParser
+fsjCLI/TextInputInterface.java
+ fsjCLI.TextInputInterface
+fsjPage/Page.java
+ fsjPage.Page
+fsjLogger/LogHandler.java
+ fsjLogger.LogHandler
+fsjCLI/CommandParser.java
+ fsjCLI.CommandParser
+fsjMessaging/Message.java
+ fsjMessaging.Message
+fsjCLI/ConsoleColors.java
+ fsjCLI.ConsoleColors
+fsjMessaging/Notification.java
+ fsjMessaging.Notification
+fsjMessaging/ChatMessage.java
+ fsjMessaging.ChatMessage
+fsjMessaging/NotificationList.java
+ fsjMessaging.NotificationList
+fsjDataManager/JsonHandler.java
+ fsjDataManager.JsonHandler
+fsjMessaging/Tweet.java
+ fsjMessaging.Tweet
+fsjPage/MessageRoom.java
+ fsjPage.MessageRoom
+ fsjPage.MessageRoom$1
+ fsjPage.MessageRoom$MessageRoomBuilder
+ fsjPage.MessageRoom$RoomType
+fsjMessaging/Comment.java
+ fsjMessaging.Comment
+fsjAccount/User.java
+ fsjAccount.User
+ fsjAccount.User$1
+ fsjAccount.User$2
+ fsjAccount.User$AccountStatus
+ fsjAccount.User$LastSeenStatus
+ fsjAccount.User$LastSeenVisibility
+ fsjAccount.User$PrivacyStatus
+ fsjAccount.User$UserBuilder
+fsjMain/Main.java
+ fsjMain.Main
+fsjMain/Initialization.java
+ fsjMain.Initialization
+fsjPage/FsjPageManager.java
+ fsjPage.FsjPageManager
+ fsjPage.FsjPageManager$CompleteState

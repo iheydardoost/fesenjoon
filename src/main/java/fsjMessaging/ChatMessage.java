@@ -4,14 +4,19 @@ import java.time.LocalDateTime;
 
 public class ChatMessage extends Message{
     private long roomID;
-    private int messageNum;
+    private long messageID;
+    private long lastMessageID = Long.MIN_VALUE;
 
     public ChatMessage() {
     }
 
-    public ChatMessage(String msgText, LocalDateTime msgDateTime, long userID, long roomID, int messageNum) {
+    public ChatMessage(String msgText, LocalDateTime msgDateTime, long userID, long roomID, long messageID) {
         super(msgText, msgDateTime, userID);
         this.roomID = roomID;
-        this.messageNum = messageNum;
+        this.messageID = messageID;
+    }
+
+    public long generateID(){
+        return (++lastMessageID);
     }
 }

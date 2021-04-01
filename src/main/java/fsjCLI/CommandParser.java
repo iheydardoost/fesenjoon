@@ -1,20 +1,24 @@
 package fsjCLI;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+@JsonIgnoreProperties({"inStr","scanner","commandsMap","tagsMap","validCommands","validTags"})
+
 public class CommandParser implements TextInputInterface, ConsoleColors{
-    private String inStr;
+    public String inStr;
     static private Scanner scanner = new Scanner(System.in);
     private String command;
     private LinkedList<String> args;
     private LinkedList<Integer> argTags;
     static private Hashtable<String, Integer> commandsMap = new Hashtable<>();
     static private Hashtable<String, Integer> tagsMap = new Hashtable<>();
-    private ArrayList<Integer> validCommands;
-    private ArrayList<Integer> validTags;
+    private ArrayList<String> validCommands;
+    private ArrayList<String> validTags;
 
     public CommandParser() {
         this.command = null;
@@ -32,14 +36,16 @@ public class CommandParser implements TextInputInterface, ConsoleColors{
         return this.command;
     }
 
-    public void addValidCommand(Integer commandID){
-        if(validCommands.contains(commandID)) return;
-        validCommands.add(commandID);
+    public CommandParser addValidCommand(String commandStr){
+        if(validCommands.contains(commandStr)) return this;
+        validCommands.add(commandStr);
+        return this;
     }
 
-    public void addValidTag(Integer tagID){
-        if(validTags.contains(tagID)) return;
-        validTags.add(tagID);
+    public CommandParser addValidTag(String tagStr){
+        if(validTags.contains(tagStr)) return this;
+        validTags.add(tagStr);
+        return this;
     }
 
     public static void addCommand(Integer commandID, String commandWord){
@@ -52,27 +58,37 @@ public class CommandParser implements TextInputInterface, ConsoleColors{
         tagsMap.put(tagWord, tagID);
     }
 
-    public void listenToUser(){
+    public boolean listenToUser(){
         listen();
         parseCommand();
+        if(this.command==null) return false;
+        if(this.command.equals("help")){
+            printHelp();
+            return false;
+        }
+        return true;
     }
 
     private void parseCommand(){
         String[] words = this.inStr.split("\\s+");
         if(!commandsMap.containsKey(words[0])) {
-            improperInput(false, words[0] + " is not a valid command.");
+            improperInput(false, words[0] + " is not a command.");
             return;
         }
-        if(words.length%2==0) {
-            improperInput(false, "number of arguments is not correct.");
+        if(!validCommands.contains(words[0]) && !words[0].equals("help")) {
+            improperInput(false, words[0] + " is not a valid command in this page.");
             return;
         }
-
         this.command = words[0];
+
         for(int i=1;i<words.length;i++){
             if(i%2==1){
                 if(!tagsMap.containsKey(words[i])) {
-                    improperInput(false, words[i] + " is not a valid tag.");
+                    improperInput(false, words[i] + " is not a tag.");
+                    return;
+                }
+                if(!validTags.contains(words[i])){
+                    improperInput(false, words[i] + " is not a valid tag in this page.");
                     return;
                 }
                 this.argTags.add(tagsMap.get(words[i]));
@@ -84,21 +100,21 @@ public class CommandParser implements TextInputInterface, ConsoleColors{
 
     private void printValidCommands(){
         System.out.println(WHITE_BACKGROUND + "Valid Commands List :" + COLOR_RESET);
-        for(int i=0;i<validCommands.size();i++){
-            System.out.println(GREEN_BRIGHT + validCommands.get(i) + COLOR_RESET);
+        for(int i=0;i<this.validCommands.size();i++){
+            System.out.println(BLUE_BRIGHT + this.validCommands.get(i) + COLOR_RESET);
         }
     }
 
     private void printValidTags(){
         System.out.println(WHITE_BACKGROUND + "Valid Tags List :" + COLOR_RESET);
-        for(int i=0;i<validTags.size();i++){
-            System.out.println(GREEN_BRIGHT + validTags.get(i) + COLOR_RESET);
+        for(int i=0;i<this.validTags.size();i++){
+            System.out.println(BLUE_BRIGHT + this.validTags.get(i) + COLOR_RESET);
         }
     }
 
-    public void printHelp(){
-        if(validCommands.size()!=0) printValidCommands();
-        if(validTags.size()!=0) printValidTags();
+    private void printHelp(){
+        if(this.validCommands.size()!=0) printValidCommands();
+        if(this.validTags.size()!=0) printValidTags();
     }
 
     @Override
@@ -124,10 +140,6 @@ public class CommandParser implements TextInputInterface, ConsoleColors{
         this.args.clear();
         this.argTags.clear();
         this.inStr = scanner.nextLine();
-        if(this.inStr.length()<=0){
-            improperInput(false,"Please write a command.");
-            return;
-        }
     }
 
     @Override
