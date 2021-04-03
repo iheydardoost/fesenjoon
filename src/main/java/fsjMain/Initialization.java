@@ -5,6 +5,7 @@ import fsjCLI.CommandParser;
 import fsjDataManager.JsonHandler;
 import fsjLogger.LogHandler;
 import fsjPage.FsjPageManager;
+import fsjPage.PersonalPage;
 
 public class Initialization {
 
@@ -16,6 +17,8 @@ public class Initialization {
             initCommands();
             JsonHandler.InitMapper();
             FsjPageManager.initLoginPage();
+            FsjPageManager.initMainPage();
+            PersonalPage.initPersonalPage();
             LogHandler.initLogger(true);
             User.initUser();
         } catch (Exception e) {
@@ -56,5 +59,7 @@ public class Initialization {
         //tagId should be an integer between 700 to 999
         CommandParser.addCommandTag(700, "--choice");
         CommandParser.addCommandTag(701, "--tweet");
+        CommandParser.addCommandTag(702, "--list");
+        CommandParser.addCommandTag(703, "--info");
     }
 }

@@ -36,9 +36,10 @@ public class Page {
         this.commandParser = commandParser;
     }
 
-    public void addChoice(String choice){
-        if(this.choiceList.contains(choice)) return;
+    public Page addChoice(String choice){
+        if(this.choiceList.contains(choice)) return this;
         this.choiceList.add(choice);
+        return this;
     }
 
     public void removeChoice(String choice){

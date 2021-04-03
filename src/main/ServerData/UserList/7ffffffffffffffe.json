@@ -2,13 +2,13 @@
   "userID" : 9223372036854775806,
   "userName" : "iman",
   "firstName" : "iman",
-  "lastName" : "heydardoost",
+  "lastName" : "heydar",
   "passwordHash" : 109201546,
   "passwordLength" : 5,
   "dateOfBirth" : "1999-01-21",
-  "email" : "iheydardoost@yahoo.com",
+  "email" : "i",
   "phoneNumber" : null,
-  "bio" : "i am good.",
+  "bio" : "",
   "accountStatus" : "ACTIVE",
   "lastSeenStatus" : "LAST_SEEN_RECENTLY",
   "lastSeenVisibility" : "EVERYONE",
@@ -18,5 +18,5 @@
   "followings" : [ ],
   "blackList" : [ ],
   "notificationList" : [ ],
-  "lastTweetNum" : 0
+  "lastTweetID" : 2
 }

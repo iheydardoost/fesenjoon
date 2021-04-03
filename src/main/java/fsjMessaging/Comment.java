@@ -1,5 +1,7 @@
 package fsjMessaging;
 
+import fsjAccount.User;
+
 import java.time.LocalDateTime;
 
 public class Comment extends Tweet{
@@ -9,8 +11,8 @@ public class Comment extends Tweet{
     public Comment() {
     }
 
-    public Comment(String msgText, LocalDateTime msgDateTime, long userID, int tweetID, long commentID) {
-        super(msgText, msgDateTime, userID, tweetID);
+    public Comment(String msgText, LocalDateTime msgDateTime, User writer) {
+        super(msgText, msgDateTime, writer);
         this.commentID = commentID;
     }
 

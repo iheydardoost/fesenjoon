@@ -3,6 +3,7 @@ package fsjAccount;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import fsjDataManager.JsonHandler;
+import fsjMain.Main;
 import fsjMessaging.Notification;
 import fsjPage.MessageRoom;
 
@@ -35,7 +36,7 @@ public class User {
     public ArrayList<User> blackList;
     public ArrayList<Notification> notificationList;
     private static long lastUserID = Long.MAX_VALUE;
-    private int lastTweetNum;
+    private long lastTweetID;
     public static Hashtable<String, Long> userNameList = new Hashtable<>();
     public static Hashtable<String, Long> emailList = new Hashtable<>();
 
@@ -73,7 +74,7 @@ public class User {
         this.followings = new ArrayList<>();
         this.blackList = new ArrayList<>();
         this.notificationList = new ArrayList<>();
-        this.lastTweetNum = 0;
+        this.lastTweetID = 0;
         saveToUserList();
     }
 
@@ -141,11 +142,14 @@ public class User {
     public static void initUser() throws Exception {
         String path;
         path = ".\\src\\main\\ServerData\\UserList\\lastUserID.json";
-        lastUserID = JsonHandler.mapper.readValue(new File(path), Long.class);
+        File file1 = new File(path);
+        if(file1.isFile()) lastUserID = JsonHandler.mapper.readValue(file1, Long.class);
         path = ".\\src\\main\\ServerData\\UserList\\userNameList.json";
-        userNameList = JsonHandler.mapper.readValue(new File(path), new TypeReference<Hashtable<String, Long>>() {});
+        File file2 = new File(path);
+        if(file2.isFile()) userNameList = JsonHandler.mapper.readValue(file2, new TypeReference<Hashtable<String, Long>>() {});
         path = ".\\src\\main\\ServerData\\UserList\\emailList.json";
-        emailList = JsonHandler.mapper.readValue(new File(path), new TypeReference<Hashtable<String, Long>>() {});
+        File file3 = new File(path);
+        if(file3.isFile()) emailList = JsonHandler.mapper.readValue(file3, new TypeReference<Hashtable<String, Long>>() {});
     }
 
     public static void saveUserClass() throws Exception{
@@ -158,7 +162,7 @@ public class User {
         JsonHandler.mapper.writeValue(new File(path), emailList);
     }
 
-    private void saveToUserList() {
+    public void saveToUserList() {
         File file = new File(".\\src\\main\\ServerData\\UserList\\" + Long.toHexString(this.userID) + ".json");
         try {
             JsonHandler.mapper.writeValue(file, this);
@@ -337,12 +341,12 @@ public class User {
         User.lastUserID = lastUserID;
     }
 
-    public int getLastTweetNum() {
-        return lastTweetNum;
+    public long getLastTweetID() {
+        return lastTweetID;
     }
 
-    public void setLastTweetNum(int lastTweetNum) {
-        this.lastTweetNum = lastTweetNum;
+    public void setLastTweetID(long lastTweetID) {
+        this.lastTweetID = lastTweetID;
     }
 
     public static Hashtable<String, Long> getUserNameList() {
@@ -360,5 +364,16 @@ public class User {
     public static void setEmailList(Hashtable<String, Long> emailList) {
         User.emailList = emailList;
     }
+
+    public void printUserInfo(){
+        System.out.println("userName = " + this.userName);
+        System.out.println("firstName =" + this.firstName);
+        System.out.println("lastName =" + this.lastName);
+        System.out.println("dateOfBirth =" + this.dateOfBirth);
+        System.out.println("email = " + this.email);
+        System.out.println("phoneNumber = " + this.phoneNumber);
+        System.out.println("bio = " + this.bio);
+    }
+
 }
 

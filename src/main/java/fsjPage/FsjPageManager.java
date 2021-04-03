@@ -12,18 +12,49 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import static fsjPage.PersonalPage.personalPageManager;
+
 public class FsjPageManager {
     private static final Page loginPage = new Page("Login Page", new CommandParser(), new ArrayList<>());
-    public enum CompleteState{SIGN_UP_COMPLETE,LOG_IN_COMPLETE,NONE,EXIT}
+    private static final Page mainPage = new Page("Main Page",new CommandParser(),new ArrayList<>());
+    public enum CompleteState{SIGN_UP_COMPLETE,LOG_IN_COMPLETE,NONE,EXIT,LOG_OUT}
 
     public FsjPageManager() {
     }
 
     public static void initLoginPage(){
-        loginPage.addChoice("sign-up");
-        loginPage.addChoice("log-in");
+        loginPage.addChoice("sign-up").addChoice("log-in");
         loginPage.getCommandParser().addValidCommand("exit").addValidCommand("select").addValidCommand("list");
         loginPage.getCommandParser().addValidTag("--choice");
+    }
+
+    public static void initMainPage(){
+        mainPage.addChoice("personal-page").addChoice("timeline").addChoice("explorer").addChoice("messaging").addChoice("setting");
+        mainPage.getCommandParser().addValidCommand("exit").addValidCommand("select").addValidCommand("list");
+        mainPage.getCommandParser().addValidTag("--choice");
+    }
+
+    public static CompleteState mainPageManager(){
+        mainPage.printChoiceList();
+        CompleteState result;
+
+        while(true){
+            if(mainPage.getCommandParser().listenToUser()){
+                switch (mainPage.getCommandParser().getCommand()){
+                    case "exit":
+                        return CompleteState.EXIT;
+                    case "select":
+                        result = selectCommand(mainPage);
+                        if(result==CompleteState.EXIT) return CompleteState.EXIT;
+                        else break;
+                    case "list":
+                        mainPage.printChoiceList();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     public static CompleteState loginPageManager(){
@@ -36,7 +67,7 @@ public class FsjPageManager {
                     case "exit":
                         return CompleteState.EXIT;
                     case "select":
-                        result = selectCommand();
+                        result = selectCommand(loginPage);
                         if(result!=CompleteState.NONE) return result;
                         break;
                     case "list":
@@ -49,20 +80,41 @@ public class FsjPageManager {
         }
     }
 
-    private static CompleteState selectCommand(){
-        if(loginPage.getCommandParser().getArgs().isEmpty()) {
-            loginPage.getCommandParser().improperInput(false, "use : select --choice <XXX>");
+    private static CompleteState selectCommand(Page whatPage){
+        if(whatPage.getCommandParser().getArgs().isEmpty()) {
+            whatPage.getCommandParser().improperInput(false, "use : select --choice <XXX>");
             return CompleteState.NONE;
         }
-        switch (loginPage.getCommandParser().getArgs().get(0)){
-            case "sign-up":
-                return signupFunction();
-            case "log-in":
-                return loginFunction();
-            default:
-                loginPage.getCommandParser().improperInput(false, "choose a valid choice.");
-                return CompleteState.NONE;
+        if(whatPage.getPageName().equals(loginPage.getPageName())) {
+            switch (loginPage.getCommandParser().getArgs().get(0)) {
+                case "sign-up":
+                    return signupFunction();
+                case "log-in":
+                    return loginFunction();
+                default:
+                    loginPage.getCommandParser().improperInput(false, "choose a valid choice.");
+                    return CompleteState.NONE;
+            }
         }
+        if(whatPage.getPageName().equals(mainPage.getPageName())){
+            switch (mainPage.getCommandParser().getArgs().get(0)){
+                case "personal-page":
+                    return PersonalPage.personalPageManager();
+                case "timeline":
+                    return TimelinePage.timelinePageManager();
+                case "explorer":
+                    return ExplorerPage.explorerPageManager();
+                case "messaging":
+                    return MessagingPage.messagingPageManager();
+                case "setting":
+                    return SettingPage.settingPageManager();
+                default:
+                    mainPage.getCommandParser().improperInput(false,"choose a valid choice.");
+                    return CompleteState.NONE;
+            }
+        }
+
+        return CompleteState.NONE;
     }
 
     private static CompleteState signupFunction(){
@@ -132,12 +184,14 @@ public class FsjPageManager {
                     loginPage.getCommandParser().listen();
                     inStr = loginPage.getCommandParser().inStr;
                     if(inStr.equals("--quit")) return CompleteState.NONE;
-                    try {
-                        userBuilder.setDateOfBirth(LocalDate.parse(inStr, DateTimeFormatter.ISO_DATE));
-                    } catch (Exception e) {
-                        //e.printStackTrace();
-                        loginPage.getCommandParser().improperInput(false,"date format must be (yyyy-mm-dd).");
-                        break;
+                    if(inStr.length()>0) {
+                        try {
+                            userBuilder.setDateOfBirth(LocalDate.parse(inStr, DateTimeFormatter.ISO_DATE));
+                        } catch (Exception e) {
+                            //e.printStackTrace();
+                            loginPage.getCommandParser().improperInput(false, "date format must be (yyyy-mm-dd).");
+                            break;
+                        }
                     }
                     level++;
                     break;
@@ -183,7 +237,7 @@ public class FsjPageManager {
 
         while(true) {
             /******************--User Name--*********************/
-            System.out.println("enter user name :");
+            System.out.print("enter user name :");
             loginPage.getCommandParser().listen();
             inStr = loginPage.getCommandParser().inStr;
             if (inStr.length() == 0) continue;
@@ -211,7 +265,7 @@ public class FsjPageManager {
 
         while(true){
             /******************--User Password--*********************/
-            System.out.println("enter password :");
+            System.out.print("enter password :");
             loginPage.getCommandParser().listen();
             inStr = loginPage.getCommandParser().inStr;
             if (inStr.equals("--quit")) return CompleteState.NONE;

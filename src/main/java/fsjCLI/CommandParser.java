@@ -15,8 +15,8 @@ public class CommandParser implements TextInputInterface, ConsoleColors{
     private String command;
     private LinkedList<String> args;
     private LinkedList<Integer> argTags;
-    static private Hashtable<String, Integer> commandsMap = new Hashtable<>();
-    static private Hashtable<String, Integer> tagsMap = new Hashtable<>();
+    static public Hashtable<String, Integer> commandsMap = new Hashtable<>();
+    static public Hashtable<String, Integer> tagsMap = new Hashtable<>();
     private ArrayList<String> validCommands;
     private ArrayList<String> validTags;
 

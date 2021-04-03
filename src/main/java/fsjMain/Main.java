@@ -12,18 +12,32 @@ public class Main {
 
     public static void main(String[] args) {
         Initialization.initClasses();
-        FsjPageManager.CompleteState state;
+        FsjPageManager.CompleteState state = FsjPageManager.CompleteState.LOG_OUT;
 
         while (true) {
-            state = FsjPageManager.loginPageManager();
+            switch (state){
+                case LOG_OUT:
+                    state = FsjPageManager.loginPageManager();
+                    break;
+                case LOG_IN_COMPLETE:
+                    state = FsjPageManager.mainPageManager();
+                    break;
+                case SIGN_UP_COMPLETE:
+                    state = FsjPageManager.mainPageManager();
+                    break;
+                case EXIT:
+                    exitCommand();
+                    break;
+            }
+
             System.out.println(state);
-            if(state == FsjPageManager.CompleteState.EXIT) exitCommand();
         }
     }
 
     public static void exitCommand(){
         try {
             User.saveUserClass();
+            mainUser.saveToUserList();
         } catch (Exception e) {
             e.printStackTrace();
         }

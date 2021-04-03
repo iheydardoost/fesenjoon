@@ -1,13 +1,18 @@
-fsjCLI/TextInputInterface.java
- fsjCLI.TextInputInterface
-fsjPage/Page.java
- fsjPage.Page
+fsjPage/MessageRoom.java
+ fsjPage.MessageRoom
+ fsjPage.MessageRoom$1
+ fsjPage.MessageRoom$MessageRoomBuilder
+ fsjPage.MessageRoom$RoomType
+fsjPage/TimelinePage.java
+ fsjPage.TimelinePage
 fsjLogger/LogHandler.java
  fsjLogger.LogHandler
-fsjCLI/CommandParser.java
- fsjCLI.CommandParser
+fsjCLI/TextInputInterface.java
+ fsjCLI.TextInputInterface
 fsjMessaging/Message.java
  fsjMessaging.Message
+fsjPage/ExplorerPage.java
+ fsjPage.ExplorerPage
 fsjCLI/ConsoleColors.java
  fsjCLI.ConsoleColors
 fsjMessaging/Notification.java
@@ -18,15 +23,14 @@ fsjMessaging/NotificationList.java
  fsjMessaging.NotificationList
 fsjDataManager/JsonHandler.java
  fsjDataManager.JsonHandler
-fsjMessaging/Tweet.java
- fsjMessaging.Tweet
-fsjPage/MessageRoom.java
- fsjPage.MessageRoom
- fsjPage.MessageRoom$1
- fsjPage.MessageRoom$MessageRoomBuilder
- fsjPage.MessageRoom$RoomType
-fsjMessaging/Comment.java
- fsjMessaging.Comment
+fsjCLI/CommandParser.java
+ fsjCLI.CommandParser
+fsjPage/MessagingPage.java
+ fsjPage.MessagingPage
+fsjPage/SettingPage.java
+ fsjPage.SettingPage
+fsjPage/Page.java
+ fsjPage.Page
 fsjAccount/User.java
  fsjAccount.User
  fsjAccount.User$1
@@ -38,8 +42,15 @@ fsjAccount/User.java
  fsjAccount.User$UserBuilder
 fsjMain/Main.java
  fsjMain.Main
+ fsjMain.Main$1
+fsjMessaging/Comment.java
+ fsjMessaging.Comment
+fsjMessaging/Tweet.java
+ fsjMessaging.Tweet
 fsjMain/Initialization.java
  fsjMain.Initialization
+fsjPage/PersonalPage.java
+ fsjPage.PersonalPage
 fsjPage/FsjPageManager.java
  fsjPage.FsjPageManager
  fsjPage.FsjPageManager$CompleteState
