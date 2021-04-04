@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class MessageRoom extends Page{
     private long roomID;
-    private ArrayList<User> userList;
+    private ArrayList<Long> userIdList;
     private RoomType roomType;
-    private int lastMessageNum;
+    private int lastMessageID;
     private static long lastMessageRoomID = Long.MIN_VALUE;
 
     public MessageRoom() {
@@ -18,9 +18,9 @@ public class MessageRoom extends Page{
     private MessageRoom(String pageName, CommandParser commandParser, ArrayList<String> choiceList, long roomID, RoomType roomType) {
         super(pageName, commandParser, choiceList);
         this.roomID = roomID;
-        this.userList = new ArrayList<>();
+        this.userIdList = new ArrayList<>();
         this.roomType = roomType;
-        this.lastMessageNum = 0;
+        this.lastMessageID = 0;
     }
 
     public class MessageRoomBuilder{

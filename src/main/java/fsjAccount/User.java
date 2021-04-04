@@ -3,20 +3,25 @@ package fsjAccount;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import fsjDataManager.JsonHandler;
+import fsjLogger.LogHandler;
 import fsjMain.Main;
 import fsjMessaging.Notification;
+import fsjMessaging.Tweet;
+import fsjPage.FsjPageManager;
 import fsjPage.MessageRoom;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class User {
 
-    public long userID;
+    private long userID;
     public String userName;
     public String firstName;
     public String lastName;
@@ -26,27 +31,29 @@ public class User {
     public String email;
     public String phoneNumber;
     public String bio;
+    public LocalDateTime lastSeen;
     public AccountStatus accountStatus;
     public LastSeenStatus lastSeenStatus;
     public LastSeenVisibility lastSeenVisibility;
     public PrivacyStatus privacyStatus;
     public ArrayList<MessageRoom> messageRoomList;
-    public ArrayList<User> followers;
-    public ArrayList<User> followings;
-    public ArrayList<User> blackList;
+    public ArrayList<Long> followers;
+    public ArrayList<Long> followings;
+    public ArrayList<Long> blackList;
+    public ArrayList<Long> silentList;
     public ArrayList<Notification> notificationList;
     private static long lastUserID = Long.MAX_VALUE;
     private long lastTweetID;
     public static Hashtable<String, Long> userNameList = new Hashtable<>();
     public static Hashtable<String, Long> emailList = new Hashtable<>();
 
-    enum AccountStatus {ACTIVE, INACTIVE}
+    public enum AccountStatus {ACTIVE, INACTIVE}
 
-    enum LastSeenStatus {LAST_SEEN_RECENTLY, LAST_SEEN_DATE}
+    public enum LastSeenStatus {LAST_SEEN_RECENTLY, LAST_SEEN_DATE}
 
-    enum LastSeenVisibility {EVERYONE, NO_ONE, FOLLOWINGS}
+    public enum LastSeenVisibility {EVERYONE, NO_ONE, FOLLOWINGS}
 
-    enum PrivacyStatus {PRIVATE, PUBLIC}
+    public enum PrivacyStatus {PRIVATE, PUBLIC}
 
     public User() {
     }
@@ -66,6 +73,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.bio = bio;
         this.accountStatus = AccountStatus.ACTIVE;
+        this.lastSeen = LocalDateTime.now();
         this.lastSeenStatus = LastSeenStatus.LAST_SEEN_RECENTLY;
         this.lastSeenVisibility = LastSeenVisibility.EVERYONE;
         this.privacyStatus = PrivacyStatus.PUBLIC;
@@ -73,6 +81,7 @@ public class User {
         this.followers = new ArrayList<>();
         this.followings = new ArrayList<>();
         this.blackList = new ArrayList<>();
+        this.silentList = new ArrayList<>();
         this.notificationList = new ArrayList<>();
         this.lastTweetID = 0;
         saveToUserList();
@@ -163,6 +172,7 @@ public class User {
     }
 
     public void saveToUserList() {
+        this.lastSeen = LocalDateTime.now();
         File file = new File(".\\src\\main\\ServerData\\UserList\\" + Long.toHexString(this.userID) + ".json");
         try {
             JsonHandler.mapper.writeValue(file, this);
@@ -301,27 +311,27 @@ public class User {
         this.messageRoomList = messageRoomList;
     }
 
-    public ArrayList<User> getFollowers() {
+    public ArrayList<Long> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(ArrayList<User> followers) {
+    public void setFollowers(ArrayList<Long> followers) {
         this.followers = followers;
     }
 
-    public ArrayList<User> getFollowings() {
+    public ArrayList<Long> getFollowings() {
         return followings;
     }
 
-    public void setFollowings(ArrayList<User> followings) {
+    public void setFollowings(ArrayList<Long> followings) {
         this.followings = followings;
     }
 
-    public ArrayList<User> getBlackList() {
+    public ArrayList<Long> getBlackList() {
         return blackList;
     }
 
-    public void setBlackList(ArrayList<User> blackList) {
+    public void setBlackList(ArrayList<Long> blackList) {
         this.blackList = blackList;
     }
 
@@ -375,5 +385,29 @@ public class User {
         System.out.println("bio = " + this.bio);
     }
 
+    public static String findUserName(long userID){
+        for(Object o: userNameList.entrySet()){
+            Map.Entry entry = (Map.Entry) o;
+            if(entry.getKey().equals(userID))
+                return (String) entry.getValue();
+        }
+        return null;
+    }
+
+    public static User loadUser(long userID){
+        String path = ".\\src\\main\\ServerData\\UserList\\" + Long.toHexString(userID) + ".json";
+        File file = new File(path);
+        if(file.isFile()){
+            try {
+                User user = JsonHandler.mapper.readValue(file,User.class);
+                LogHandler.logger.info("user " + userID + " loaded.");
+                return user;
+            } catch (IOException e) {
+                //e.printStackTrace();
+                LogHandler.logger.error("user "+userID+" could not be read.");
+            }
+        }
+        return null;
+    }
 }
 

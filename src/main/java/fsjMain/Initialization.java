@@ -6,6 +6,8 @@ import fsjDataManager.JsonHandler;
 import fsjLogger.LogHandler;
 import fsjPage.FsjPageManager;
 import fsjPage.PersonalPage;
+import fsjPage.SettingPage;
+import fsjPage.TimelinePage;
 
 public class Initialization {
 
@@ -19,10 +21,14 @@ public class Initialization {
             FsjPageManager.initLoginPage();
             FsjPageManager.initMainPage();
             PersonalPage.initPersonalPage();
+            SettingPage.initSettingPage();
+            TimelinePage.initTimeline();
             LogHandler.initLogger(true);
             User.initUser();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            LogHandler.logger.fatal("initialization was unsuccessful.");
+            Main.exitCommand();
         }
     }
 
@@ -44,7 +50,7 @@ public class Initialization {
         CommandParser.addCommand(112, "block");
         CommandParser.addCommand(113, "send");
         CommandParser.addCommand(114, "forward");
-        CommandParser.addCommand(115, "add");
+        CommandParser.addCommand(115, "addto");
         CommandParser.addCommand(116, "like");
         CommandParser.addCommand(117, "move");
         CommandParser.addCommand(118, "answer");
@@ -54,6 +60,8 @@ public class Initialization {
         CommandParser.addCommand(122, "edit");
         CommandParser.addCommand(123, "list");
         CommandParser.addCommand(124, "help");
+        CommandParser.addCommand(125, "logout");
+        CommandParser.addCommand(126, "retweet");
 
         /***----------------------Command_Tags------------------------------***/
         //tagId should be an integer between 700 to 999
@@ -61,5 +69,7 @@ public class Initialization {
         CommandParser.addCommandTag(701, "--tweet");
         CommandParser.addCommandTag(702, "--list");
         CommandParser.addCommandTag(703, "--info");
+        CommandParser.addCommandTag(704, "--comment");
+        CommandParser.addCommandTag(705, "--user");
     }
 }

@@ -35,18 +35,20 @@ public class FsjPageManager {
     }
 
     public static CompleteState mainPageManager(){
-        mainPage.printChoiceList();
         CompleteState result;
 
         while(true){
+            mainPage.printChoiceList();
             if(mainPage.getCommandParser().listenToUser()){
                 switch (mainPage.getCommandParser().getCommand()){
                     case "exit":
                         return CompleteState.EXIT;
                     case "select":
                         result = selectCommand(mainPage);
-                        if(result==CompleteState.EXIT) return CompleteState.EXIT;
-                        else break;
+                        if(result==CompleteState.EXIT || result==CompleteState.LOG_OUT)
+                            return result;
+                        else
+                            break;
                     case "list":
                         mainPage.printChoiceList();
                         break;
@@ -225,7 +227,7 @@ public class FsjPageManager {
         }
 
         Main.mainUser = userBuilder.build();
-        LogHandler.logger.info("user "+ Long.toHexString(Main.mainUser.userID) + " signed up successfully.");
+        LogHandler.logger.info("user "+ Long.toHexString(Main.mainUser.getUserID()) + " signed up successfully.");
         return CompleteState.SIGN_UP_COMPLETE;
     }
 
@@ -250,18 +252,9 @@ public class FsjPageManager {
             break;
         }
 
-        String path = ".\\src\\main\\ServerData\\UserList\\"+Long.toHexString(userID)+".json";
-        File file = new File(path);
-        if(!file.exists())
-            LogHandler.logger.error("file " + path + " does not exist.");
-        try {
-            user = JsonHandler.mapper.readValue(file,User.class);
-        } catch (IOException e) {
-            //e.printStackTrace();
-            LogHandler.logger.error("can not read " + path);
+        user = User.loadUser(userID);
+        if(user == null)
             return CompleteState.NONE;
-        }
-        LogHandler.logger.info("user " + userID + " loaded.");
 
         while(true){
             /******************--User Password--*********************/

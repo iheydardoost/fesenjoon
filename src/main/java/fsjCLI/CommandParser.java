@@ -63,7 +63,7 @@ public class CommandParser implements TextInputInterface, ConsoleColors{
         parseCommand();
         if(this.command==null) return false;
         if(this.command.equals("help")){
-            printHelp();
+            this.printHelp();
             return false;
         }
         return true;
