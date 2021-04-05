@@ -1,19 +1,13 @@
 package fsjPage;
 
-import com.sun.org.apache.bcel.internal.generic.MONITORENTER;
 import fsjAccount.User;
 import fsjCLI.CommandParser;
-import fsjDataManager.JsonHandler;
 import fsjLogger.LogHandler;
 import fsjMain.Main;
 import fsjMessaging.Comment;
 import fsjMessaging.Tweet;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class PersonalPage {
@@ -26,7 +20,7 @@ public class PersonalPage {
     }
 
     public static void initPersonalPage() {
-        personalPage.addChoice("new --tweet").addChoice("edit --info <XXX>:\n\tfirstName\n\tlastName\n\tphoneNumber\n\tnio");
+        personalPage.addChoice("new --tweet").addChoice("edit --info <XXX>:\n\tfirstName\n\tlastName\n\tphoneNumber\n\tbio");
         personalPage.addChoice("show --info");
         personalPage.addChoice("goto --list <XXX>:\n\tmyTweets\n\tfollowings\n\tfollowers\n\tblackList\n\tnotifications");
         personalPage.getCommandParser().addValidCommand("new").addValidCommand("show").addValidCommand("goto");
@@ -118,7 +112,7 @@ public class PersonalPage {
     }
 
     private static FsjPageManager.CompleteState editCommand() {
-        if (personalPage.getCommandParser().getArgs().size() != 1 &&
+        if (personalPage.getCommandParser().getArgs().size() != 1 ||
                 personalPage.getCommandParser().getArgTags().get(0)!=CommandParser.tagsMap.get("--info")) {
             personalPage.getCommandParser().improperInput(true, "");
             return FsjPageManager.CompleteState.NONE;
@@ -138,6 +132,7 @@ public class PersonalPage {
                 Main.mainUser.setFirstName(inStr);
                 System.out.println("firstName changed successfully.");
                 LogHandler.logger.info("user " + Main.mainUser.getUserID() + " changed firstName.");
+                break;
             case "lastName":
                 System.out.print("enter lastName :");
                 personalPage.getCommandParser().listen();
@@ -150,6 +145,7 @@ public class PersonalPage {
                 Main.mainUser.setLastName(inStr);
                 System.out.println("lastName changed successfully.");
                 LogHandler.logger.info("user " + Main.mainUser.getUserID() + " changed lastName.");
+                break;
             case "phoneNumber":
                 System.out.print("enter phoneNumber :");
                 personalPage.getCommandParser().listen();
@@ -158,6 +154,7 @@ public class PersonalPage {
                 Main.mainUser.setPhoneNumber(inStr);
                 System.out.println("phoneNumber changed successfully.");
                 LogHandler.logger.info("user " + Main.mainUser.getUserID() + " changed phoneNumber.");
+                break;
             case "bio":
                 System.out.print("enter bio :");
                 personalPage.getCommandParser().listen();
@@ -166,6 +163,7 @@ public class PersonalPage {
                 Main.mainUser.setBio(inStr);
                 System.out.println("bio changed successfully.");
                 LogHandler.logger.info("user " + Main.mainUser.getUserID() + " changed bio.");
+                break;
             default:
                 personalPage.getCommandParser().improperInput(false, "can not change.");
                 break;
@@ -175,7 +173,7 @@ public class PersonalPage {
     }
 
     private static FsjPageManager.CompleteState gotoCommand() {
-        if (personalPage.getCommandParser().getArgs().size() != 1 &&
+        if (personalPage.getCommandParser().getArgs().size() != 1 ||
                 personalPage.getCommandParser().getArgTags().get(0)!=CommandParser.tagsMap.get("--list")) {
             personalPage.getCommandParser().improperInput(true, "");
             return FsjPageManager.CompleteState.NONE;
@@ -188,7 +186,7 @@ public class PersonalPage {
                 return listsManager(LIST.FOLLOWINGS);
             case "followers":
                 return listsManager(LIST.FOLLOWERS);
-            case "blacklist":
+            case "blackList":
                 return listsManager(LIST.BLACK_LIST);
             case "notifications":
                 return notificationManager();
@@ -237,7 +235,7 @@ public class PersonalPage {
                     case "return":
                         return FsjPageManager.CompleteState.NONE;
                     case "goto":
-                        if (listPage.getCommandParser().getArgs().size() != 1 &&
+                        if (listPage.getCommandParser().getArgs().size() != 1 ||
                                 listPage.getCommandParser().getArgTags().get(0)!=CommandParser.tagsMap.get("--user")) {
                             listPage.getCommandParser().improperInput(true, "");
                             return FsjPageManager.CompleteState.NONE;
@@ -287,7 +285,7 @@ public class PersonalPage {
                     case "list":
                         break;
                     case "show":
-                        if (myTweetsPage.getCommandParser().getArgs().size() != 1 &&
+                        if (myTweetsPage.getCommandParser().getArgs().size() != 1 ||
                                 myTweetsPage.getCommandParser().getArgTags().get(0)!=CommandParser.tagsMap.get("--tweet")) {
                             myTweetsPage.getCommandParser().improperInput(true, "");
                             return FsjPageManager.CompleteState.NONE;

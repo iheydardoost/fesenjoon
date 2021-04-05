@@ -4,7 +4,6 @@ import fsjAccount.User;
 import fsjCLI.ConsoleColors;
 import fsjDataManager.JsonHandler;
 import fsjLogger.LogHandler;
-import fsjMain.Main;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,7 +75,7 @@ public class Tweet extends Message{
             return;
         }
         System.out.print(ConsoleColors.PURPLE);
-        System.out.println("==========Tweet==========");
+        System.out.println("\n\n==========Tweet==========");
         System.out.println(tweet.getMsgText());
         System.out.println("Writer: " +userName);
         System.out.println("Date: " +tweet.getMsgDateTime().toLocalDate().toString());

@@ -4,10 +4,7 @@ import fsjAccount.User;
 import fsjCLI.CommandParser;
 import fsjDataManager.JsonHandler;
 import fsjLogger.LogHandler;
-import fsjPage.FsjPageManager;
-import fsjPage.PersonalPage;
-import fsjPage.SettingPage;
-import fsjPage.TimelinePage;
+import fsjPage.*;
 
 public class Initialization {
 
@@ -23,6 +20,7 @@ public class Initialization {
             PersonalPage.initPersonalPage();
             SettingPage.initSettingPage();
             TimelinePage.initTimeline();
+            ExplorerPage.initExplorer();
             LogHandler.initLogger(true);
             User.initUser();
         } catch (Exception e) {
@@ -71,5 +69,7 @@ public class Initialization {
         CommandParser.addCommandTag(703, "--info");
         CommandParser.addCommandTag(704, "--comment");
         CommandParser.addCommandTag(705, "--user");
+        CommandParser.addCommandTag(706, "--next");
+        CommandParser.addCommandTag(707, "--previous");
     }
 }

@@ -1,6 +1,7 @@
 package fsjLogger;
 
 import org.apache.log4j.*;
+
 import static fsjCLI.ConsoleColors.*;
 
 public class LogHandler {

@@ -1,36 +1,30 @@
+fsjMessaging/NotificationList.java
+ fsjMessaging.NotificationList
+fsjMessaging/ChatMessage.java
+ fsjMessaging.ChatMessage
+fsjMessaging/Notification.java
+ fsjMessaging.Notification
+fsjCLI/TextInputInterface.java
+ fsjCLI.TextInputInterface
+fsjMessaging/Message.java
+ fsjMessaging.Message
+fsjCLI/CommandParser.java
+ fsjCLI.CommandParser
+fsjCLI/ConsoleColors.java
+ fsjCLI.ConsoleColors
+fsjDataManager/JsonHandler.java
+ fsjDataManager.JsonHandler
+fsjPage/Page.java
+ fsjPage.Page
+fsjLogger/LogHandler.java
+ fsjLogger.LogHandler
+fsjPage/MessagingPage.java
+ fsjPage.MessagingPage
 fsjPage/MessageRoom.java
  fsjPage.MessageRoom
  fsjPage.MessageRoom$1
  fsjPage.MessageRoom$MessageRoomBuilder
  fsjPage.MessageRoom$RoomType
-fsjPage/TimelinePage.java
- fsjPage.TimelinePage
-fsjLogger/LogHandler.java
- fsjLogger.LogHandler
-fsjCLI/TextInputInterface.java
- fsjCLI.TextInputInterface
-fsjMessaging/Message.java
- fsjMessaging.Message
-fsjPage/ExplorerPage.java
- fsjPage.ExplorerPage
-fsjCLI/ConsoleColors.java
- fsjCLI.ConsoleColors
-fsjMessaging/Notification.java
- fsjMessaging.Notification
-fsjMessaging/ChatMessage.java
- fsjMessaging.ChatMessage
-fsjMessaging/NotificationList.java
- fsjMessaging.NotificationList
-fsjDataManager/JsonHandler.java
- fsjDataManager.JsonHandler
-fsjCLI/CommandParser.java
- fsjCLI.CommandParser
-fsjPage/MessagingPage.java
- fsjPage.MessagingPage
-fsjPage/SettingPage.java
- fsjPage.SettingPage
-fsjPage/Page.java
- fsjPage.Page
 fsjAccount/User.java
  fsjAccount.User
  fsjAccount.User$1
@@ -40,17 +34,27 @@ fsjAccount/User.java
  fsjAccount.User$LastSeenVisibility
  fsjAccount.User$PrivacyStatus
  fsjAccount.User$UserBuilder
+fsjMessaging/Tweet.java
+ fsjMessaging.Tweet
+fsjPage/TimelinePage.java
+ fsjPage.TimelinePage
+ fsjPage.TimelinePage$SHOWN_TWEET_STATUS
+fsjPage/PersonalPage.java
+ fsjPage.PersonalPage
+ fsjPage.PersonalPage$1
+ fsjPage.PersonalPage$LIST
 fsjMain/Main.java
  fsjMain.Main
  fsjMain.Main$1
 fsjMessaging/Comment.java
  fsjMessaging.Comment
-fsjMessaging/Tweet.java
- fsjMessaging.Tweet
+fsjPage/SettingPage.java
+ fsjPage.SettingPage
 fsjMain/Initialization.java
  fsjMain.Initialization
-fsjPage/PersonalPage.java
- fsjPage.PersonalPage
+fsjPage/ExplorerPage.java
+ fsjPage.ExplorerPage
+ fsjPage.ExplorerPage$SHOWN_TWEET_STATUS
 fsjPage/FsjPageManager.java
  fsjPage.FsjPageManager
  fsjPage.FsjPageManager$CompleteState

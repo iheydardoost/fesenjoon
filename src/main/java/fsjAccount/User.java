@@ -1,17 +1,12 @@
 package fsjAccount;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import fsjDataManager.JsonHandler;
 import fsjLogger.LogHandler;
-import fsjMain.Main;
 import fsjMessaging.Notification;
-import fsjMessaging.Tweet;
-import fsjPage.FsjPageManager;
 import fsjPage.MessageRoom;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -386,12 +381,11 @@ public class User {
     }
 
     public static String findUserName(long userID){
-        for(Object o: userNameList.entrySet()){
-            Map.Entry entry = (Map.Entry) o;
-            if(entry.getKey().equals(userID))
-                return (String) entry.getValue();
-        }
-        return null;
+        User user = loadUser(userID);
+        if(user==null)
+            return null;
+        else
+            return user.userName;
     }
 
     public static User loadUser(long userID){

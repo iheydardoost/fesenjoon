@@ -4,7 +4,6 @@ import fsjAccount.User;
 import fsjCLI.CommandParser;
 import fsjMain.Main;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 
 public class SettingPage{
@@ -50,7 +49,7 @@ public class SettingPage{
     }
 
     private static FsjPageManager.CompleteState editCommand(){
-        if (mainSettingPage.getCommandParser().getArgs().size() != 1 &&
+        if (mainSettingPage.getCommandParser().getArgs().size() != 1 ||
                 mainSettingPage.getCommandParser().getArgTags().get(0)!=CommandParser.tagsMap.get("--choice")) {
             mainSettingPage.getCommandParser().improperInput(true, "");
             return FsjPageManager.CompleteState.NONE;
@@ -104,6 +103,7 @@ public class SettingPage{
                     if (inStr.equals("--quit")) return;
                     Main.mainUser.setPasswordLength(inStr.length());
                     Main.mainUser.setPasswordHash(inStr.hashCode());
+                    Main.mainUser.saveToUserList();
                     return;
                 }
             }
@@ -124,12 +124,15 @@ public class SettingPage{
             switch (mainSettingPage.getCommandParser().inStr) {
                 case "1":
                     Main.mainUser.setLastSeenVisibility(User.LastSeenVisibility.FOLLOWINGS);
+                    Main.mainUser.saveToUserList();
                     return;
                 case "2":
                     Main.mainUser.setLastSeenVisibility(User.LastSeenVisibility.EVERYONE);
+                    Main.mainUser.saveToUserList();
                     return;
                 case "3":
                     Main.mainUser.setLastSeenVisibility(User.LastSeenVisibility.NO_ONE);
+                    Main.mainUser.saveToUserList();
                     return;
                 default:
                     System.out.println("choose a number between 1 to 3.");
@@ -139,8 +142,10 @@ public class SettingPage{
     }
 
     private static FsjPageManager.CompleteState logoutUser(){
-        if(mainSettingPage.getCommandParser().askYesNoQ("Do you want to log out?"))
+        if(mainSettingPage.getCommandParser().askYesNoQ("Do you want to log out?")) {
+            Main.mainUser.saveToUserList();
             return FsjPageManager.CompleteState.LOG_OUT;
+        }
         else
             return FsjPageManager.CompleteState.NONE;
     }

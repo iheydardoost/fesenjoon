@@ -1,6 +1,5 @@
 package fsjPage;
 
-import fsjAccount.User;
 import fsjCLI.CommandParser;
 
 import java.util.ArrayList;

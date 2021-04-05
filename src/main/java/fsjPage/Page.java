@@ -4,7 +4,8 @@ import fsjCLI.CommandParser;
 
 import java.util.ArrayList;
 
-import static fsjCLI.ConsoleColors.*;
+import static fsjCLI.ConsoleColors.COLOR_RESET;
+import static fsjCLI.ConsoleColors.YELLOW_BOLD;
 
 public class Page {
     private String pageName;

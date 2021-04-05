@@ -5,14 +5,11 @@ import fsjCLI.CommandParser;
 import fsjLogger.LogHandler;
 import fsjMain.Main;
 import fsjMessaging.Comment;
-import fsjMessaging.Message;
 import fsjMessaging.Tweet;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Random;
 
 public class TimelinePage{
     private static final Page timeline = new Page("Timeline",new CommandParser(),new ArrayList<>());
@@ -44,6 +41,7 @@ public class TimelinePage{
     }
 
     public static FsjPageManager.CompleteState timelinePageManager(){
+        FsjPageManager.CompleteState state = FsjPageManager.CompleteState.NONE;
         timeline.printChoiceList();
         if(TimelinePage.chooseShownTweet()==SHOWN_TWEET_STATUS.EMPTY)
             return FsjPageManager.CompleteState.NONE;
@@ -87,10 +85,10 @@ public class TimelinePage{
                         break;
                     case "goto":
                         if (timeline.getCommandParser().getArgTags().get(0)==CommandParser.tagsMap.get("--user")) {
-                            return PersonalPage.gotoAnotherPage(shownTweet.getUserID());
+                            state = PersonalPage.gotoAnotherPage(shownTweet.getUserID());
                         }
                         else if(timeline.getCommandParser().getArgTags().get(0)==CommandParser.tagsMap.get("--comment")){
-                            return commentListManager();
+                            state = commentListManager();
                         }
                         else{
                             timeline.getCommandParser().improperInput(true, "");
@@ -101,7 +99,7 @@ public class TimelinePage{
                             timeline.getCommandParser().improperInput(true, "");
                             break;
                         }
-                        return Comment.newCommentCommand(timeline,shownTweet.getTweetID());
+                        state = Comment.newCommentCommand(timeline,shownTweet.getTweetID());
                     case "list":
                         timeline.printChoiceList();
                         break;
@@ -112,11 +110,13 @@ public class TimelinePage{
                     default:
                         break;
                 }
+
+                if(state== FsjPageManager.CompleteState.EXIT) return state;
             }
         }
     }
 
-    enum SHOWN_TWEET_STATUS{EMPTY,NORMAL}
+    private enum SHOWN_TWEET_STATUS{EMPTY,NORMAL}
 
     private static SHOWN_TWEET_STATUS chooseShownTweet(){
         if(Main.mainUser.followings.isEmpty()){
@@ -127,12 +127,17 @@ public class TimelinePage{
         shuffledFollowings = (ArrayList<Long>) Main.mainUser.followings.clone();
         Collections.shuffle(shuffledFollowings);
         followingsOffset=0;
-        long lastTweetID = User.loadUser(shuffledFollowings.get(followingsOffset)).getLastTweetID();
-        while(lastTweetID==0){
+
+        User user = User.loadUser(shuffledFollowings.get(followingsOffset));
+        long lastTweetID = user.getLastTweetID();
+        User.AccountStatus accStatus = user.accountStatus;
+        while(lastTweetID==0 || accStatus== User.AccountStatus.INACTIVE || Main.mainUser.silentList.contains(user.getUserID())){
             if(followingsOffset==shuffledFollowings.size())
                 followingsOffset = 0;
             followingsOffset++;
-            lastTweetID = User.loadUser(shuffledFollowings.get(followingsOffset)).getLastTweetID();
+            user = User.loadUser(shuffledFollowings.get(followingsOffset));
+            lastTweetID = user.getLastTweetID();
+            accStatus = user.accountStatus;
         }
         shownTweetOffset= 1 + (long) (Math.random() * (lastTweetID - 1));
         shownTweet = Tweet.loadTweet(shuffledFollowings.get(followingsOffset),shownTweetOffset);
@@ -142,6 +147,7 @@ public class TimelinePage{
 
     private static void moveTweet(int step){
         long lastTweetID=0;
+        User.AccountStatus accStatus;
         while(true) {
             if (step==1) {
                 if (followingsOffset == shuffledFollowings.size())
@@ -154,8 +160,10 @@ public class TimelinePage{
             } else
                 return;
 
-            lastTweetID = User.loadUser(shuffledFollowings.get(followingsOffset)).getLastTweetID();
-            if(lastTweetID==0)
+            User user = User.loadUser(shuffledFollowings.get(followingsOffset));
+            lastTweetID = user.getLastTweetID();
+            accStatus = user.accountStatus;
+            if(lastTweetID==0 || accStatus==User.AccountStatus.INACTIVE || Main.mainUser.silentList.contains(user.getUserID()))
                 continue;
             shownTweetOffset= 1 + (long) (Math.random() * (lastTweetID - 1));
             shownTweet = Tweet.loadTweet(shuffledFollowings.get(followingsOffset),shownTweetOffset);
@@ -227,7 +235,6 @@ public class TimelinePage{
                         if (commentList.getCommandParser().getArgTags().get(0)!=CommandParser.tagsMap.get("--user")) {
                             commentList.getCommandParser().improperInput(true, "");
                             break;
-
                         }
                         return PersonalPage.gotoAnotherPage(shownComment.getUserID());
                     case "exit":

@@ -1,13 +1,9 @@
 package fsjMain;
 
 import fsjAccount.User;
-import fsjDataManager.JsonHandler;
 import fsjLogger.LogHandler;
 import fsjMessaging.Message;
 import fsjPage.FsjPageManager;
-
-import java.io.File;
-import java.io.IOException;
 
 public class Main {
     public static User mainUser;
@@ -42,7 +38,7 @@ public class Main {
             mainUser.saveToUserList();
         } catch (Exception e) {
             //e.printStackTrace();
-            LogHandler.logger.error("data could not be saved.");
+            LogHandler.logger.error("data could not be saved on exit.");
         }
         System.exit(0);
     }

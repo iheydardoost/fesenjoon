@@ -2,17 +2,12 @@ package fsjPage;
 
 import fsjAccount.User;
 import fsjCLI.CommandParser;
-import fsjDataManager.JsonHandler;
 import fsjLogger.LogHandler;
 import fsjMain.Main;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
-import static fsjPage.PersonalPage.personalPageManager;
 
 public class FsjPageManager {
     private static final Page loginPage = new Page("Login Page", new CommandParser(), new ArrayList<>());
@@ -228,6 +223,12 @@ public class FsjPageManager {
 
         Main.mainUser = userBuilder.build();
         LogHandler.logger.info("user "+ Long.toHexString(Main.mainUser.getUserID()) + " signed up successfully.");
+        try {
+            User.saveUserClass();
+        } catch (Exception e) {
+            //e.printStackTrace();
+            LogHandler.logger.error("UserClass data could not be saved.");
+        }
         return CompleteState.SIGN_UP_COMPLETE;
     }
 
