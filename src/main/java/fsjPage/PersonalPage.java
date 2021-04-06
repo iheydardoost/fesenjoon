@@ -5,6 +5,7 @@ import fsjCLI.CommandParser;
 import fsjLogger.LogHandler;
 import fsjMain.Main;
 import fsjMessaging.Comment;
+import fsjMessaging.Notification;
 import fsjMessaging.Tweet;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ public class PersonalPage {
     private static final Page personalPage = new Page("Personal Page", new CommandParser(), new ArrayList<>());
     private static final Page myTweetsPage = new Page("My Tweets",new CommandParser(), new ArrayList<>());
     private static final Page listPage = new Page("List Page",new CommandParser(),new ArrayList<>());
+    private static final Page visitPage = new Page("Visit User Page",new CommandParser(),new ArrayList<>());
     enum LIST{FOLLOWINGS,FOLLOWERS,BLACK_LIST}
 
     public PersonalPage() {
@@ -34,6 +36,10 @@ public class PersonalPage {
         listPage.addChoice("goto --user <userName>").addChoice("show");
         listPage.getCommandParser().addValidCommand("exit").addValidCommand("return").addValidCommand("goto");
         listPage.getCommandParser().addValidCommand("list").addValidCommand("show").addValidTag("--user");
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        visitPage.addChoice("follow").addChoice("message").addChoice("report").addChoice("block");
+        visitPage.getCommandParser().addValidCommand("return").addValidCommand("exit").addValidCommand("follow").
+                addValidCommand("message").addValidCommand("report").addValidCommand("block");
     }
 
     public static FsjPageManager.CompleteState personalPageManager() {
@@ -198,6 +204,7 @@ public class PersonalPage {
     }
 
     private static FsjPageManager.CompleteState notificationManager(){
+        Main.mainUser.printNotifications();
         return FsjPageManager.CompleteState.NONE;
     }
 
@@ -240,7 +247,7 @@ public class PersonalPage {
                             listPage.getCommandParser().improperInput(true, "");
                             return FsjPageManager.CompleteState.NONE;
                         }
-                        return gotoAnotherPage(User.userNameList.get(listPage.getCommandParser().getArgs().get(0)));
+                        return visitAnotherUser(User.userNameList.get(listPage.getCommandParser().getArgs().get(0)));
                     case "list":
                         break;
                     case "show":
@@ -257,8 +264,98 @@ public class PersonalPage {
         }
     }
 
-    public static FsjPageManager.CompleteState gotoAnotherPage(long userID){
-        return FsjPageManager.CompleteState.NONE;
+    public static FsjPageManager.CompleteState visitAnotherUser(long userID){
+        User user = User.loadUser(userID);
+        if(user.getAccountStatus()== User.AccountStatus.INACTIVE)
+            return FsjPageManager.CompleteState.USER_INACTIVE;
+
+        System.out.println("#################### User Personal Page ########################");
+        System.out.println("firstName = "+user.getFirstName());
+        System.out.println("lastName = "+user.getLastName());
+        System.out.println("userName = "+user.getUserName());
+        boolean showLastSeen = false;
+        switch (user.getLastSeenVisibility()){
+            case EVERYONE:
+                showLastSeen=true;
+                break;
+            case FOLLOWINGS:
+                if(user.getFollowings().contains(Main.mainUser.getUserID())) showLastSeen=true;
+                break;
+            case NO_ONE:
+                showLastSeen=false;
+                break;
+            default:
+                break;
+        }
+        if(showLastSeen){
+            switch (user.getLastSeenStatus()){
+                case LAST_SEEN_RECENTLY:
+                    System.out.println("lastSeen = "+User.LastSeenStatus.LAST_SEEN_RECENTLY);
+                    break;
+                case LAST_SEEN_DATE:
+                    System.out.println("lastSeen = "+user.lastSeen.toString());
+                    break;
+                default:
+                    break;
+            }
+        }
+        if(Main.mainUser.getFollowings().contains(userID))
+            System.out.println("you have followed this user.");
+        else
+            System.out.println("you have not followed this user.");
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        while(true){
+            visitPage.printChoiceList();
+            if(visitPage.getCommandParser().listenToUser()){
+                switch (visitPage.getCommandParser().getCommand()){
+                    case "return":
+                        return FsjPageManager.CompleteState.NONE;
+                    case "exit":
+                        return FsjPageManager.CompleteState.EXIT;
+                    case "follow":
+                        if(user.getBlackList().contains(Main.mainUser.getUserID())){
+                            System.out.println("this user blocked you.");
+                            break;
+                        }
+                        if(Main.mainUser.getBlackList().contains(userID)){
+                            System.out.println("you blocked this user.");
+                            break;
+                        }
+                        if(user.getPrivacyStatus()== User.PrivacyStatus.PUBLIC){
+                            Main.mainUser.getFollowings().add(userID);
+                            user.getFollowers().add(Main.mainUser.getUserID());
+                            user.getNotificationList().add(new Notification("user "+Main.mainUser.getUserName()+" followed you.",
+                                                            LocalDateTime.now(),userID, Notification.NOTIFICATION_CONTEX.INFO));
+                            System.out.println("followed successfully.");
+                            break;
+                        }
+                        else if(user.getPrivacyStatus()== User.PrivacyStatus.PRIVATE){
+                            user.getNotificationList().add(new Notification("user "+Main.mainUser.getUserName()+" wants to follow you.",
+                                    LocalDateTime.now(),userID, Notification.NOTIFICATION_CONTEX.OTHERS_REQUEST));
+                            Main.mainUser.getNotificationList().add(new Notification("user "+user.getUserName()+" follow request.",
+                                    LocalDateTime.now(),userID, Notification.NOTIFICATION_CONTEX.MY_REQUEST));
+                            break;
+                        }
+                        break;
+                    case "report":
+                        Main.report("user "+user.getUserID());
+                        break;
+                    case "block":
+                        Main.mainUser.blackList.add(user.getUserID());
+                        break;
+                    case "message":
+                        if(!user.getFollowers().contains(Main.mainUser.getUserID())) {
+                            System.out.println("you did not followed this user yet.");
+                            break;
+                        }
+                        System.out.println("not implemented yet.");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     private static FsjPageManager.CompleteState myTweetsManager(){

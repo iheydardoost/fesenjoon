@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class FsjPageManager {
     private static final Page loginPage = new Page("Login Page", new CommandParser(), new ArrayList<>());
     private static final Page mainPage = new Page("Main Page",new CommandParser(),new ArrayList<>());
-    public enum CompleteState{SIGN_UP_COMPLETE,LOG_IN_COMPLETE,NONE,EXIT,LOG_OUT}
+    public enum CompleteState{SIGN_UP_COMPLETE,LOG_IN_COMPLETE,NONE,EXIT,LOG_OUT,USER_INACTIVE}
 
     public FsjPageManager() {
     }

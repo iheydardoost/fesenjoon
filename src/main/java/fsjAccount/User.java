@@ -403,5 +403,12 @@ public class User {
         }
         return null;
     }
+
+    public void printNotifications(){
+        System.out.println("**********NOTIFICATIONS**********");
+        for(int i=0;i<this.notificationList.size();i++){
+            System.out.println(this.notificationList.get(i));
+        }
+    }
 }
 

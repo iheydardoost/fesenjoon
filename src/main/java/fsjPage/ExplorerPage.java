@@ -82,11 +82,11 @@ public class ExplorerPage{
                         Main.mainUser.silentList.add(shownTweet.getUserID());
                         break;
                     case "report":
-                        Main.reportMessage(shownTweet);
+                        Main.report("user "+shownTweet.getUserID()+" ,tweet "+shownTweet.getTweetID());
                         break;
                     case "goto":
                         if (explorer.getCommandParser().getArgTags().get(0)==CommandParser.tagsMap.get("--user")) {
-                            state = PersonalPage.gotoAnotherPage(shownTweet.getUserID());
+                            state = PersonalPage.visitAnotherUser(shownTweet.getUserID());
                         }
                         else if(explorer.getCommandParser().getArgTags().get(0)==CommandParser.tagsMap.get("--comment")){
                             state = commentListManager();
@@ -127,7 +127,7 @@ public class ExplorerPage{
 
     private static FsjPageManager.CompleteState searchUserCommand(){
         if(User.userNameList.containsKey(explorer.getCommandParser().getArgs().get(0)))
-            return PersonalPage.gotoAnotherPage(shownTweet.getUserID());
+            return PersonalPage.visitAnotherUser(shownTweet.getUserID());
         else {
             System.out.println("UserName <" + explorer.getCommandParser().getArgs().get(0) + "> not found.");
             return FsjPageManager.CompleteState.NONE;
@@ -259,7 +259,7 @@ public class ExplorerPage{
                         Main.mainUser.silentList.add(shownComment.getUserID());
                         break;
                     case "report":
-                        Main.reportMessage(shownComment);
+                        Main.report("user "+shownComment.getUserID()+" ,tweet "+shownComment.getTweetID()+" ,comment "+shownComment.getCommentID());
                         break;
                     case "goto":
                         if (commentList.getCommandParser().getArgTags().get(0)!=CommandParser.tagsMap.get("--user")) {
@@ -267,7 +267,7 @@ public class ExplorerPage{
                             break;
 
                         }
-                        return PersonalPage.gotoAnotherPage(shownComment.getUserID());
+                        return PersonalPage.visitAnotherUser(shownComment.getUserID());
                     case "exit":
                         return FsjPageManager.CompleteState.EXIT;
                     case "return":

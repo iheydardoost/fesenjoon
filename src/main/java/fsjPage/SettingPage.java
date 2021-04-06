@@ -4,6 +4,7 @@ import fsjAccount.User;
 import fsjCLI.CommandParser;
 import fsjMain.Main;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class SettingPage{
@@ -143,6 +144,7 @@ public class SettingPage{
 
     private static FsjPageManager.CompleteState logoutUser(){
         if(mainSettingPage.getCommandParser().askYesNoQ("Do you want to log out?")) {
+            Main.mainUser.lastSeen= LocalDateTime.now();
             Main.mainUser.saveToUserList();
             return FsjPageManager.CompleteState.LOG_OUT;
         }
@@ -155,6 +157,7 @@ public class SettingPage{
             Main.mainUser.setAccountStatus(User.AccountStatus.INACTIVE);
             User.userNameList.remove(Main.mainUser.userName);
             User.emailList.remove(Main.mainUser.email);
+            Main.deleteUser();
             return FsjPageManager.CompleteState.EXIT;
         }
         else return FsjPageManager.CompleteState.NONE;

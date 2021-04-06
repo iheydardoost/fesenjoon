@@ -81,11 +81,11 @@ public class TimelinePage{
                         Main.mainUser.silentList.add(shownTweet.getUserID());
                         break;
                     case "report":
-                        Main.reportMessage(shownTweet);
+                        Main.report("user "+shownTweet.getUserID()+" ,tweet "+shownTweet.getTweetID());
                         break;
                     case "goto":
                         if (timeline.getCommandParser().getArgTags().get(0)==CommandParser.tagsMap.get("--user")) {
-                            state = PersonalPage.gotoAnotherPage(shownTweet.getUserID());
+                            state = PersonalPage.visitAnotherUser(shownTweet.getUserID());
                         }
                         else if(timeline.getCommandParser().getArgTags().get(0)==CommandParser.tagsMap.get("--comment")){
                             state = commentListManager();
@@ -229,14 +229,14 @@ public class TimelinePage{
                         Main.mainUser.silentList.add(shownComment.getUserID());
                         break;
                     case "report":
-                        Main.reportMessage(shownComment);
+                        Main.report("user "+shownComment.getUserID()+" ,tweet "+shownComment.getTweetID()+" ,comment "+shownComment.getCommentID());
                         break;
                     case "goto":
                         if (commentList.getCommandParser().getArgTags().get(0)!=CommandParser.tagsMap.get("--user")) {
                             commentList.getCommandParser().improperInput(true, "");
                             break;
                         }
-                        return PersonalPage.gotoAnotherPage(shownComment.getUserID());
+                        return PersonalPage.visitAnotherUser(shownComment.getUserID());
                     case "exit":
                         return FsjPageManager.CompleteState.EXIT;
                     case "return":

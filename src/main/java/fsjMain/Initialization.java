@@ -15,6 +15,7 @@ public class Initialization {
         try {
             initCommands();
             JsonHandler.InitMapper();
+            Main.initServer();
             FsjPageManager.initLoginPage();
             FsjPageManager.initMainPage();
             PersonalPage.initPersonalPage();
@@ -60,6 +61,7 @@ public class Initialization {
         CommandParser.addCommand(124, "help");
         CommandParser.addCommand(125, "logout");
         CommandParser.addCommand(126, "retweet");
+        CommandParser.addCommand(127, "message");
 
         /***----------------------Command_Tags------------------------------***/
         //tagId should be an integer between 700 to 999
