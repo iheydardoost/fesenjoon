@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import fsjAccount.User;
 import fsjDataManager.JsonHandler;
 import fsjLogger.LogHandler;
-import fsjMessaging.Message;
 import fsjPage.FsjPageManager;
 
 import java.io.File;

@@ -1,23 +1,18 @@
-fsjAccount/User.java
- fsjAccount.User
- fsjAccount.User$1
- fsjAccount.User$2
- fsjAccount.User$AccountStatus
- fsjAccount.User$LastSeenStatus
- fsjAccount.User$LastSeenVisibility
- fsjAccount.User$PrivacyStatus
- fsjAccount.User$UserBuilder
+fsjPage/MessageRoom.java
+ fsjPage.MessageRoom
+ fsjPage.MessageRoom$1
+ fsjPage.MessageRoom$MessageRoomBuilder
+ fsjPage.MessageRoom$RoomType
 fsjPage/Page.java
  fsjPage.Page
 fsjLogger/LogHandler.java
  fsjLogger.LogHandler
-fsjMain/Initialization.java
- fsjMain.Initialization
+fsjCLI/TextInputInterface.java
+ fsjCLI.TextInputInterface
 fsjMessaging/Message.java
  fsjMessaging.Message
-fsjPage/ExplorerPage.java
- fsjPage.ExplorerPage
- fsjPage.ExplorerPage$SHOWN_TWEET_STATUS
+fsjCLI/CommandParser.java
+ fsjCLI.CommandParser
 fsjCLI/ConsoleColors.java
  fsjCLI.ConsoleColors
 fsjMessaging/Notification.java
@@ -29,32 +24,37 @@ fsjMessaging/NotificationList.java
  fsjMessaging.NotificationList
 fsjDataManager/JsonHandler.java
  fsjDataManager.JsonHandler
+fsjPage/MessagingPage.java
+ fsjPage.MessagingPage
+fsjAccount/User.java
+ fsjAccount.User
+ fsjAccount.User$1
+ fsjAccount.User$2
+ fsjAccount.User$AccountStatus
+ fsjAccount.User$LastSeenStatus
+ fsjAccount.User$LastSeenVisibility
+ fsjAccount.User$PrivacyStatus
+ fsjAccount.User$UserBuilder
 fsjMain/Main.java
  fsjMain.Main
  fsjMain.Main$1
  fsjMain.Main$2
  fsjMain.Main$3
-fsjPage/MessageRoom.java
- fsjPage.MessageRoom
- fsjPage.MessageRoom$1
- fsjPage.MessageRoom$MessageRoomBuilder
- fsjPage.MessageRoom$RoomType
 fsjMessaging/Comment.java
  fsjMessaging.Comment
 fsjMessaging/Tweet.java
  fsjMessaging.Tweet
 fsjPage/SettingPage.java
  fsjPage.SettingPage
-fsjCLI/TextInputInterface.java
- fsjCLI.TextInputInterface
+fsjMain/Initialization.java
+ fsjMain.Initialization
+fsjPage/ExplorerPage.java
+ fsjPage.ExplorerPage
+ fsjPage.ExplorerPage$SHOWN_TWEET_STATUS
 fsjPage/PersonalPage.java
  fsjPage.PersonalPage
  fsjPage.PersonalPage$1
  fsjPage.PersonalPage$LIST
-fsjCLI/CommandParser.java
- fsjCLI.CommandParser
-fsjPage/MessagingPage.java
- fsjPage.MessagingPage
 fsjPage/FsjPageManager.java
  fsjPage.FsjPageManager
  fsjPage.FsjPageManager$CompleteState

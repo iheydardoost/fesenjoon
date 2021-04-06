@@ -6,7 +6,6 @@ import fsjLogger.LogHandler;
 import fsjMain.Main;
 import fsjMessaging.Comment;
 import fsjMessaging.Tweet;
-import org.omg.PortableInterceptor.NON_EXISTENT;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
